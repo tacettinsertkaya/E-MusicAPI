@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\Tacet\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Tacet\\.nuget\\packages"
+    ]
+  }
+}
