@@ -61,18 +61,18 @@ namespace EMusicAPI.Controllers
         {
 
 
-            const string cacheKey = "userMusicList";
+            //const string cacheKey = "userMusicList";
 
-            if (_memCache.TryGetValue(cacheKey, out object list))
-                return Ok(list);
+            //if (_memCache.TryGetValue(cacheKey, out object list))
+            //    return Ok(list);
 
             var userMusicList = await _musicService.GetUserMusicListByFilterAsync(filter);
 
-            _memCache.Set(cacheKey, userMusicList, new MemoryCacheEntryOptions
-            {
-                AbsoluteExpiration = DateTime.Now.AddSeconds(20),
-                Priority = CacheItemPriority.Normal
-            });
+            //_memCache.Set(cacheKey, userMusicList, new MemoryCacheEntryOptions
+            //{
+            //    AbsoluteExpiration = DateTime.Now.AddSeconds(20),
+            //    Priority = CacheItemPriority.Normal
+            //});
             return Ok(userMusicList);
 
 

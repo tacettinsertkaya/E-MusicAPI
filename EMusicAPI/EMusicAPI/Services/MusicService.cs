@@ -121,6 +121,14 @@ namespace EMusicAPI.Services
 
             if (!string.IsNullOrEmpty(filter.Name))
                 query = query.Where(p => p.Name.Contains(filter.Name));
+            
+            if (!string.IsNullOrEmpty(filter.OwnerFullName))
+                query = query.Where(p => p.OwnerFullName.Contains(filter.OwnerFullName));
+            
+            if (!string.IsNullOrEmpty(filter.SearchParams))
+                query = query.Where(p => p.Name.Contains(filter.SearchParams) ||
+                                         p.OwnerFullName.Contains(filter.SearchParams)                                          
+                                         );
 
 
             var pagedData = await query.OrderByDescending(p => p.Name)
@@ -141,6 +149,13 @@ namespace EMusicAPI.Services
             if (!string.IsNullOrEmpty(filter.Name))
                 query = query.Where(p => p.Name.Contains(filter.Name));
 
+            if (!string.IsNullOrEmpty(filter.OwnerFullName))
+                query = query.Where(p => p.OwnerFullName.Contains(filter.OwnerFullName));
+
+            if (!string.IsNullOrEmpty(filter.SearchParams))
+                query = query.Where(p => p.Name.Contains(filter.SearchParams) ||
+                                         p.OwnerFullName.Contains(filter.SearchParams)
+                                         );
 
             var pagedData = await query.OrderByDescending(p => p.Name)
                             .Skip((filter.PageNumber - 1) * filter.PageSize)
