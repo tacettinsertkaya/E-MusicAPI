@@ -13,7 +13,7 @@ namespace EMusicAPI.Services.Abstraction
     public interface IMusicService
     {
         Task<Response<Music>> CreateAsync(Music Music);
-        Task<Response<bool>> DeleteAsync(Guid Id);
+        Task<Response<bool>> DeleteAsync(string Id);
         Task<Response<Music>> GetByFilterAsync(MusicFilter filter);
         Task<Response<UserMusicDto>> GetUserMusicByFilterAsync(MusicFilter filter);
         Task<PagedResponse<List<Music>>> GetListByFilterAsync(MusicListFilter filter);

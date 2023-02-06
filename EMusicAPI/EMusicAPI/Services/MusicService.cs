@@ -17,17 +17,14 @@ namespace EMusicAPI.Services
 {
     public class MusicService : IMusicService
     {
-        private EMusicDbContext _db { get; set; }
-        private ApplicationDbContext _userdb { get; set; }
+        private AppDbContext _db { get; set; }
         private IQueueService _queueService { get; set; }
 
-        public MusicService(EMusicDbContext db,
-                            ApplicationDbContext userdb,
+        public MusicService(AppDbContext db,
                             IQueueService queueService
                             )
         {
             _db = db;
-            _userdb = userdb;
             _queueService = queueService;
         }
         public async Task<Response<Music>> CreateAsync(Music Music)
@@ -39,7 +36,7 @@ namespace EMusicAPI.Services
             return new Response<Music>(Music);
         }
 
-        public async Task<Response<bool>> DeleteAsync(Guid Id)
+        public async Task<Response<bool>> DeleteAsync(string Id)
         {
             var Music = await _db.Musics.Where(p => p.Id == Id).FirstOrDefaultAsync();
             var result = _db.Musics.Remove(Music);
@@ -57,7 +54,7 @@ namespace EMusicAPI.Services
             IQueryable<Music> query = _db.Musics;
 
             if (!string.IsNullOrEmpty(filter.Id))
-                query = query.Where(p => p.Id == Guid.Parse(filter.Id));
+                query = query.Where(p => p.Id == filter.Id);
             if (!string.IsNullOrEmpty(filter.Name))
                 query = query.Where(p => p.Name.Contains(filter.Name));
 
@@ -96,7 +93,7 @@ namespace EMusicAPI.Services
             IQueryable<UserMusic> query = _db.UserMusic;
             var response = new UserMusicDto();
             if (!string.IsNullOrEmpty(filter.Id))
-                query = query.Where(p => p.MusicId == Guid.Parse(filter.Id));
+                query = query.Where(p => p.MusicId == filter.Id);
 
             var data = await query.Include(p => p.Music).FirstOrDefaultAsync();
             if (!(data is null))

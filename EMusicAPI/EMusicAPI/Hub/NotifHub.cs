@@ -10,12 +10,10 @@ namespace EMusicAPI.Hub
 {
     public class NotifHub: Microsoft.AspNetCore.SignalR.Hub
     {
-        public   EMusicDbContext _db { get; set; }
-        private readonly ApplicationDbContext _userdb;
-        public NotifHub(ApplicationDbContext userdb, EMusicDbContext db)
+        private readonly AppDbContext _db;
+        public NotifHub( AppDbContext db)
         {
             _db = db;
-            _userdb= userdb;
             
         }
 

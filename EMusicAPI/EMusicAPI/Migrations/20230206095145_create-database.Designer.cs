@@ -4,14 +4,16 @@ using EMusicAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EMusicAPI.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(AppDbContext))]
+    [Migration("20230206095145_create-database")]
+    partial class createdatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,9 +34,6 @@ namespace EMusicAPI.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ConfirmCode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -100,6 +99,84 @@ namespace EMusicAPI.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("EMusicAPI.Entity.Music", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Composition")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CoverImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CoverUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OwnerFullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Musics");
+                });
+
+            modelBuilder.Entity("EMusicAPI.Entity.UserMusic", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsFavorite")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPurchashing")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsViewed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MusicId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MusicId");
+
+                    b.ToTable("UserMusic");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -231,6 +308,15 @@ namespace EMusicAPI.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("EMusicAPI.Entity.UserMusic", b =>
+                {
+                    b.HasOne("EMusicAPI.Entity.Music", "Music")
+                        .WithMany()
+                        .HasForeignKey("MusicId");
+
+                    b.Navigation("Music");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -43,12 +43,9 @@ namespace EMusicAPI
                 options.AddPolicy("CorsPolicy",
                     builder => builder
                .WithOrigins(
-                "http://hakansamci.com",
-                "https://hakansamci.com",
-                 "http://veroscreening.hakansamci.com",
-                "https://veroscreening.hakansamci.com",
+             
                "http://localhost:4200",
-               "http://localhost:31864"
+               "https://owlresume.com"
                 )
                .AllowAnyMethod()
                .AllowAnyHeader()
@@ -84,15 +81,14 @@ namespace EMusicAPI
          
 
             // For Entity Framework
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnStr")), ServiceLifetime.Transient);
-            services.AddDbContext<EMusicDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnStr")), ServiceLifetime.Transient);
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ConnStr")), ServiceLifetime.Transient);
 
 
             services.AddSignalR();
 
             // For Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
 
             services.Configure<IdentityOptions>(options =>

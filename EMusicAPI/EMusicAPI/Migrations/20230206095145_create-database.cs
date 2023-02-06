@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace EMusicAPI.Migrations
 {
-    public partial class initidentity : Migration
+    public partial class createdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,7 +26,6 @@ namespace EMusicAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ConfirmCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -50,6 +49,27 @@ namespace EMusicAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Musics",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CoverImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CoverUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OwnerFullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Composition = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Year = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Musics", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -158,6 +178,31 @@ namespace EMusicAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserMusic",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IsFavorite = table.Column<bool>(type: "bit", nullable: false),
+                    IsPurchashing = table.Column<bool>(type: "bit", nullable: false),
+                    IsViewed = table.Column<bool>(type: "bit", nullable: false),
+                    MusicId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserMusic", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserMusic_Musics_MusicId",
+                        column: x => x.MusicId,
+                        principalTable: "Musics",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -196,6 +241,11 @@ namespace EMusicAPI.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserMusic_MusicId",
+                table: "UserMusic",
+                column: "MusicId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -216,10 +266,16 @@ namespace EMusicAPI.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "UserMusic");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Musics");
         }
     }
 }

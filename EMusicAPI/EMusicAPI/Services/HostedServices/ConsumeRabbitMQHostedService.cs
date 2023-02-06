@@ -43,7 +43,7 @@ namespace EMusicAPI.Services.HostedServices
             // create channel  
             _channel = _connection.CreateModel();
 
-            _channel.QueueDeclare(queue: "NotifTest2",
+            _channel.QueueDeclare(queue: "NotifTest",
                                            durable: false,
                                            exclusive: false,
                                            autoDelete: false,
@@ -76,7 +76,7 @@ namespace EMusicAPI.Services.HostedServices
             consumer.Unregistered += OnConsumerUnregistered;
             consumer.ConsumerCancelled += OnConsumerConsumerCancelled;
 
-            _channel.BasicConsume("NotifTest2", false, consumer);
+            _channel.BasicConsume("NotifTest", false, consumer);
             return Task.CompletedTask;
         }
 

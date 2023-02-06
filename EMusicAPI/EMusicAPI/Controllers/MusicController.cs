@@ -139,7 +139,7 @@ namespace EMusicAPI.Controllers
         [Authorize]
         // DELETE api/<MusicController>/5
         [HttpGet("Delete/{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(string id)
         {
             var response = await _musicService.DeleteAsync(id);
             return Ok(response);

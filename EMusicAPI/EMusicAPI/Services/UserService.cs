@@ -1,11 +1,12 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
 using EMusicAPI.Context;
 using EMusicAPI.Entity;
-
-using EMusicAPI.Helper;
-using EMusicAPI.Models;
-using EMusicAPI.Models.Configurations;
-using EMusicAPI.Models.DataFilter;
 using EMusicAPI.Models.Dto;
 using EMusicAPI.Models.Wrappers;
 using EMusicAPI.Services.Abstraction;
@@ -15,15 +16,6 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace EMusicAPI.Services
 {
@@ -35,14 +27,12 @@ namespace EMusicAPI.Services
         private readonly IConfiguration _configuration;
         private IHttpContextAccessor _accessor;
 
-        public EMusicDbContext _db { get; set; }
-        public ApplicationDbContext _userDb { get; set; }
+        public AppDbContext _db { get; set; }
 
 
         public UserService(
                            IHttpContextAccessor accessor,
-                            EMusicDbContext db,
-                            ApplicationDbContext userDb,
+                            AppDbContext db,
                             UserManager<ApplicationUser> userManager,
                             RoleManager<IdentityRole> roleManager,
                             IConfiguration configuration)
@@ -52,7 +42,6 @@ namespace EMusicAPI.Services
             this.roleManager = roleManager;
             _configuration = configuration;
             _db = db;
-            _userDb = userDb;
             _accessor = accessor;
            
 
@@ -66,7 +55,7 @@ namespace EMusicAPI.Services
             try
             {
 
-                var user = await _userDb.Users.Where(p => p.Email == model.Email && p.IsDeleted == false).FirstOrDefaultAsync();
+                var user = await _db.Users.Where(p => p.Email == model.Email && p.IsDeleted == false).FirstOrDefaultAsync();
 
                 if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
                 {
